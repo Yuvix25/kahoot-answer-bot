@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
+    <script src="{{ url_for('static', filename='index.js') }}"></script>
+    <title>Answeroot</title>
+</head>
+<body>
+    <iframe src="/getKahoot" onload="kahootLoaded();" id="game-iframe"></iframe>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Search for a kahoot...">
+        <button id="search-button" onclick="searchKahoot()">Search</button>
+        <div id="search-results"></div>
+    </div>
+</body>
+</html>
