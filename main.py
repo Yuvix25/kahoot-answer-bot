@@ -5,32 +5,37 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 
 import requests, json
-from flask import Flask, render_template, request, redirect, Response
+from flask import Flask, render_template, request, make_response, Response
+from flask_cors import CORS
+
+PORT = 9287
 
 class KahootAnswerBot:
     def __init__(self):
         chrome_options = webdriver.ChromeOptions()
         chrome_options.add_argument("--mute-audio")
         chrome_options.add_argument("--headless")
-        self.driver = webdriver.Chrome()
+        self.driver = webdriver.Chrome(options=chrome_options)
 
     def loadAnswers(self, quizId):
         self.driver.get("https://create.kahoot.it/details/" + quizId)
-        sleep(1);
+        sleep(1)
         show_answers_button = self.driver.find_element(By.XPATH, "//button[contains(., 'Show answers')]")
         show_answers_button.click()
-        sleep(1);
+        sleep(1)
         answers = self.driver.find_elements(By.XPATH, "//div[contains(@aria-label, ' correct')]")
         self.answers = list(map(lambda x: int(x.get_attribute("aria-label").split(" ")[1])-1, answers)) # answer indices
         self.driver.close()
         return self.answers
 
-
 app = Flask(__name__)
+CORS(app)
 
-@app.route("/")
-def index():
-    return render_template("index.html")
+@app.route("/explorer")
+def explorer():
+    response = make_response(render_template("explorer.html", port=PORT))
+    response.headers.add_header("Access-Control-Allow-Origin", "*")
+    return response
 
 @app.route("/getAnswers/<quizId>")
 def getAnswers(quizId):
@@ -66,16 +71,6 @@ def searchKahoot(query):
     
     return resp.text
 
-# forward rest to create.kahoot.it
-@app.route("/<path:path>")
-@app.route("/<path:path>/")
-def kahootForward(path):
-    # return proxy("https://kahoot.it/reserve/session/" + pin + "/?" + request.query_string.decode("utf-8"))
-    print("https://create.kahoot.it/" + path + "/?" + request.query_string.decode("utf-8"))
-    return proxy("https://create.kahoot.it/" + path + "/?" + request.query_string.decode("utf-8"))
-
 
 if __name__ == "__main__":
-    # bot = KahootAnswerBot()
-    # bot.loadAnswers("06f54b71-fc81-4229-aa70-bb8ee102e469")
-    app.run()
+    app.run(port=PORT)

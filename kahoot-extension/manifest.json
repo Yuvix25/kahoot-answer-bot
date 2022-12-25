@@ -1,0 +1,18 @@
+{
+    "manifest_version": 3,
+    "name": "Kahoot Answer Bot",
+    "version": "1.0",
+    "description": "This bot will be able to get a perfect score on any (public) Kahoot game.",
+    "background": {
+        "service_worker": "./js/background.js"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "https://kahoot.it/*",
+        "http://localhost:*/*"
+    ]
+}
