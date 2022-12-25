@@ -13,6 +13,7 @@
     ],
     "host_permissions": [
         "https://kahoot.it/*",
+        "https://create.kahoot.it/*",
         "http://localhost:*/*"
     ]
 }

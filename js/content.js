@@ -1,5 +1,6 @@
-const BACKEND_PORT = 9287;
-const BACKEND_URL = "http://localhost:" + BACKEND_PORT + "/";
+const DELAY_LOW = 400;
+const DELAY_HIGH = 1000;
+
 let kahootId = null;
 let answers = null;
 
@@ -7,35 +8,41 @@ const doneHTML = "<center style='width: 100%; padding-top: 10px;'><h2 style='fon
 
 async function loadKahoot(id) {
     kahootId = id;
-    answers = await (await fetch(BACKEND_URL + "getAnswers/" + id)).json();
-    document.querySelector("#search-results").innerHTML = doneHTML;
-    setTimeout(() => {
-        document.querySelector("#search-container").parentElement.style.display = "none";
-    }, 3000);
-    console.log(answers);
 
-    const interval = setInterval(() => {
-        if (location.pathname != "/gameblock") return;
+    chrome.runtime.sendMessage({
+        type: "getAnswers",
+        uuid: id,
+    }, (response) => {
+        answers = response;
 
-        if (answers === null) return;
+        document.querySelector("#search-results").innerHTML = doneHTML;
+        setTimeout(() => {
+            document.querySelector("#search-container").parentElement.style.display = "none";
+        }, 1500);
 
-        let qIndex = document.querySelector("div[data-functional-selector='question-index-counter']");
-        if (qIndex === null) return;
+        const interval = setInterval(() => {
+            if (location.pathname != "/gameblock") return;
 
-        qIndex = parseInt(qIndex.innerText.split(" ")[0]) - 1;
+            if (answers === null) return;
 
-        const answer = document.querySelector(`button[data-functional-selector='answer-${answers[qIndex]}'`);
-        if (answer === null) return;
+            let qIndex = document.querySelector("div[data-functional-selector='question-index-counter']");
+            if (qIndex === null) return;
 
-        answer.click();
-    }, 10);
+            qIndex = parseInt(qIndex.innerText.split(" ")[0]) - 1;
+
+            const answer = document.querySelector(`button[data-functional-selector='answer-${answers[qIndex]}'`);
+            if (answer === null) return;
+
+            setTimeout(() => {
+                answer.click();
+            }, Math.round(Math.random() * (DELAY_HIGH - DELAY_LOW) + DELAY_LOW));
+        }, 5);
+    });
 }
 
 async function openExplorerPrompt() {
-    const response = await (await fetch(BACKEND_URL + "explorer")).text();
     const container = document.createElement("div");
-    container.innerHTML = response;
-    container.src = BACKEND_URL + "explorer";
+    container.innerHTML = explorerHTML;
     container.style.position = "fixed";
     container.style.top = "0";
     container.style.right = "0";

@@ -1,7 +1,3 @@
-try { // maybe already declared
-    const BACKEND_PORT = 9287;
-} catch (e) { }
-
 /**
  * @type {HTMLIFrameElement}
  */
@@ -24,10 +20,10 @@ function searchKahoot() {
     results.innerHTML = loadingHTML;
     
     const query = document.querySelector("#search-container input").value;
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `http://localhost:${BACKEND_PORT}/searchKahoot/` + query);
-    xhr.onload = () => {
-        const data = JSON.parse(xhr.responseText).entities;
+    chrome.runtime.sendMessage({
+        type: "searchKahoot",
+        query: query,
+    }, (data) => {
         results.innerHTML = "";
         for (let card of data) {
             card = card.card;
@@ -50,8 +46,7 @@ function searchKahoot() {
                 };
             }
         }
-    };
-    xhr.send();
+    });
 }
 
 function chooseKahoot(id) {
@@ -62,16 +57,3 @@ function chooseKahoot(id) {
         window.onKahootChoice(id);
     }
 }
-
-
-function getAnswers() {
-    const xhr = new XMLHttpRequest();
-    xhr.open("GET", `http://localhost:${BACKEND_PORT}/getAnswers/` + quizId);
-    xhr.onload = () => {
-        const data = JSON.parse(xhr.responseText);
-        console.log(data);
-    };
-    xhr.send();
-}
-
-
