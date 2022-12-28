@@ -1,4 +1,4 @@
-const DELAY_LOW = 400;
+const DELAY_LOW = 600;
 const DELAY_HIGH = 1000;
 
 let kahootId = null;
@@ -33,7 +33,6 @@ async function loadKahoot(id) {
 
         document.querySelector("#search-results").innerHTML = doneHTML;
         setTimeout(() => {
-            // document.querySelector("#search-container").parentElement.style.display = "none";
             document.querySelector("#search-results").innerHTML = enableHTML;
             document.querySelector("#search-results .switch input").addEventListener("change", enableDisable);
         }, 1500);
@@ -51,6 +50,8 @@ async function loadKahoot(id) {
             const answer = document.querySelector(`button[data-functional-selector='answer-${answers[qIndex]}'`);
             if (answer === null) return;
 
+            console.log(`${qIndex + 1}: ${answers[qIndex]}`);
+
             setTimeout(() => {
                 answer.click();
             }, Math.round(Math.random() * (DELAY_HIGH - DELAY_LOW) + DELAY_LOW));
@@ -60,17 +61,6 @@ async function loadKahoot(id) {
 
 let explorerShown = false;
 async function openExplorerPrompt() {
-    // const container = document.createElement("div");
-    // container.innerHTML = explorerHTML;
-    // container.style.position = "fixed";
-    // container.style.top = "0";
-    // container.style.right = "0";
-    // container.style.width = "400px";
-    // container.style.height = "100%";
-    // container.style.border = "none";
-    // container.style.zIndex = "1000";
-
-    // document.body.appendChild(container);
     document.body.insertAdjacentHTML("beforeend", explorerHTML);
     explorerShown = true;
 
@@ -103,12 +93,6 @@ async function openExplorerPrompt() {
 }
 
 function attachContentScript() {
-    // / - game pin page
-    // /join - nickname page
-    // /start - player list start page
-    // /getready - question countdown page
-    // /gameblock - choose answer page
-    // /answer/result - answer right/wrong page
     if (location.host === "kahoot.it") {
         if (kahootId === null) {
             openExplorerPrompt();
