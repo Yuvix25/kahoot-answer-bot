@@ -58,19 +58,21 @@ async function loadKahoot(id) {
     });
 }
 
+let explorerShown = false;
 async function openExplorerPrompt() {
-    const container = document.createElement("div");
-    container.innerHTML = explorerHTML;
-    container.style.position = "fixed";
-    container.style.top = "0";
-    container.style.right = "0";
-    container.style.width = "400px";
-    container.style.height = "100%";
-    container.style.border = "none";
-    container.style.zIndex = "1000";
-    container.style.backgroundColor = "white";
+    // const container = document.createElement("div");
+    // container.innerHTML = explorerHTML;
+    // container.style.position = "fixed";
+    // container.style.top = "0";
+    // container.style.right = "0";
+    // container.style.width = "400px";
+    // container.style.height = "100%";
+    // container.style.border = "none";
+    // container.style.zIndex = "1000";
 
-    document.body.appendChild(container);
+    // document.body.appendChild(container);
+    document.body.insertAdjacentHTML("beforeend", explorerHTML);
+    explorerShown = true;
 
     document.getElementById("search-input").onkeyup = (e) => {
         if (e.key === "Enter") {
@@ -80,6 +82,24 @@ async function openExplorerPrompt() {
     document.getElementById("search-button").onclick = () => {
         searchKahoot();
     };
+
+    document.querySelector(".closebutton").onclick = () => {
+        explorerShown = false;
+        document.querySelector("#search-container").style.right = "-400px";
+        document.querySelector(".openbutton").style.setProperty("display", "block", "important");
+        setTimeout(() => {
+            document.querySelector(".openbutton").style.opacity = "1";
+        }, 100);
+    };
+
+    document.querySelector(".openbutton").onclick = () => {
+        explorerShown = true;
+        document.querySelector("#search-container").style.right = "0";
+        document.querySelector(".openbutton").style.opacity = "0";
+        setTimeout(() => {
+            document.querySelector(".openbutton").style.setProperty("display", "none", "important");
+        }, 500);
+    }
 }
 
 function attachContentScript() {
