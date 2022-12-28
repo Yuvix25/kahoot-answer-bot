@@ -6,7 +6,7 @@ const explorerHTML = `<div id="search-container">
     </span>
     
     <div id="search-tools">
-        <input type="text" id="search-input" class="sc-jHVexB jGxAXO enter-pin-form__GameInput-sc-z047z0-0 ftkppW" placeholder="Search for a Kahoot">
+        <input type="text" id="search-input" class="sc-jHVexB jGxAXO enter-pin-form__GameInput-sc-z047z0-0 ftkppW" placeholder="Find the Kahoot (By Name)">
         <button id="search-button" class="sc-gWHgXt dYkSbe enter-pin-form__SubmitButton-sc-z047z0-2 jpVzEm">Search</button>
     </div>
     <div id="search-results"></div>
