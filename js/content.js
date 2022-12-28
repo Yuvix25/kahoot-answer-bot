@@ -3,8 +3,24 @@ const DELAY_HIGH = 1000;
 
 let kahootId = null;
 let answers = null;
+let enabled = true;
 
 const doneHTML = "<center style='width: 100%; padding-top: 10px;'><h2 style='font-size: 17px;'>Done!</h2></center>";
+const enableHTML = `<div id="search-enable">
+<h2 style="font-size: 25px; width: 111.5px; text-align: right;">Enabled</h2>
+<label class="switch">
+  <input type="checkbox" checked>
+  <span class="slider round"></span>
+</label></div>`;
+
+function enableDisable(event) {
+    enabled = event.target.checked;
+    if (enabled) {
+        document.querySelector("#search-enable h2").innerText = "Enabled";
+    } else {
+        document.querySelector("#search-enable h2").innerText = "Disabled";
+    }
+}
 
 async function loadKahoot(id) {
     kahootId = id;
@@ -17,12 +33,14 @@ async function loadKahoot(id) {
 
         document.querySelector("#search-results").innerHTML = doneHTML;
         setTimeout(() => {
-            document.querySelector("#search-container").parentElement.style.display = "none";
+            // document.querySelector("#search-container").parentElement.style.display = "none";
+            document.querySelector("#search-results").innerHTML = enableHTML;
+            document.querySelector("#search-results .switch input").addEventListener("change", enableDisable);
         }, 1500);
 
         const interval = setInterval(() => {
+            if (!enabled) return;
             if (location.pathname != "/gameblock") return;
-
             if (answers === null) return;
 
             let qIndex = document.querySelector("div[data-functional-selector='question-index-counter']");
@@ -71,7 +89,6 @@ function attachContentScript() {
     // /getready - question countdown page
     // /gameblock - choose answer page
     // /answer/result - answer right/wrong page
-    console.log(location.pathname);
     if (location.host === "kahoot.it") {
         if (kahootId === null) {
             openExplorerPrompt();

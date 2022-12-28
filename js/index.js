@@ -5,15 +5,6 @@ let gameIframe;
 
 let quizId = "";
 
-function kahootLoaded() {
-    gameIframe = document.querySelector("#game-iframe");
-    gameIframe.contentWindow.document.querySelector("button[data-functional-selector='join-game-pin']")
-        .addEventListener('click', () => {
-            let pin = gameIframe.contentWindow.document.querySelector("input[name='gameId']").value;
-            console.log(pin);
-        });
-}
-
 const loadingHTML = "<center style='width: 100%; padding-top: 10px;'><h2 style='font-size: 17px;'>Loading...</h2></center>";
 function searchKahoot() {
     const results = document.querySelector("#search-results");
