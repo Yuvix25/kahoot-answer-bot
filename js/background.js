@@ -33,6 +33,7 @@ async function getAnswers(uuid) {
         for (let i = 0; i < q.choices.length; i++) {
             if (q.choices[i].correct) {
                 res.push(i);
+                break;
             }
         }
     }
