@@ -11,3 +11,6 @@ The extension injects a script into the Kahoot game page. This script first asks
 4. Select the folder where you cloned or unzipped the repository.
 
 The extension should now be installed, and will be enabled whenever you visit a `kahoot.it` page.
+
+## Mobile App
+I have also created a mobile app version of this (for android), check it out [here](https://github.com/Yuvix25/kahoot-answer-bot-mobile/releases/latest)!
