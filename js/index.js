@@ -17,13 +17,16 @@ function searchKahoot() {
     }, (data) => {
         results.innerHTML = "";
         for (let card of data) {
+            console.log(card)
             card = card.card;
             if (card.type === "quiz") {
+                const coverUrlSplit = card.cover.split("/");
+                const coverId = coverUrlSplit[coverUrlSplit.length - 1];
                 const cardDiv = document.createElement("div");
                 cardDiv.classList.add("card");
                 cardDiv.style.cursor = "pointer";
                 cardDiv.innerHTML = `
-                    <img src="${card.cover}" style="border-radius: 10px;">
+                    <img src="https://images-cdn.kahoot.it/${coverId}?auto=webp&width=350" style="border-radius: 10px;">
                     <div class="card-content">
                         <span class="card-title">${card.title}</span>
                         <p>${card.description}</p>

@@ -99,10 +99,23 @@ iframe {
     color: white;
     border-radius: 7px;
     padding: 20px;
+    overflow-wrap: break-word;
 }
 
 #search-results .card img {
     width: 100%;
+}
+
+#search-results .card .card-title {
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: 7px;
+    margin-bottom: 7px;
+}
+
+#search-results .card .card-content {
+    max-width: 313px;
 }
 
 
